@@ -10,11 +10,11 @@ https://www.uom.gr/dai
 ---
 
 <div align="center">
-  <h3>[!WARNING]</h3>
+  <h3>[WARNING]</h3>
 </div>
 
 <div align="center">
-<p align="center">All repository material is uploaded <b>after the assignment submission deadlines</b> strictly for educational and portfolio purposes. Please adhere to your institution's academic integrity policies.</p>
+<p align="center">All repository material is uploaded <b>after the assignment submission deadlines</b>.</p>
 </div>
 
 ---
