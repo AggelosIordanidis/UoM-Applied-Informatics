@@ -1,32 +1,28 @@
 .data
 string: .asciiz "Computer Systems"
-msg: .asciiz "The length of the string is: "
+msg:    .asciiz "The length of the string is: "
 
 .text
+.globl main
+main:
+    li $t0, 0         
+    la $t1, string     
 
-# Compute string length
-li $t0, 0  # Counter
-la $t1, string
-j L2
+loop:
+    lb $t2, ($t1)   
+    beq $t2, $zero, done   
+    addi $t0, $t0, 1  
+    addi $t1, $t1, 1   
+    j loop
 
-L1: 
-addi $t0, $t0, 1
-addi $t1, $t1, 1
+done:
+    li $v0, 4
+    la $a0, msg
+    syscall
 
-L2: 
-lb $t2, ($t1)
-bne $t2, $0, L1
+    li $v0, 1
+    move $a0, $t0
+    syscall
 
-
-# Print result
-li $v0, 4
-la $a0, msg
-syscall
-
-li $v0, 1
-move $a0, $t0
-syscall
-
-# exit
-la $v0, 10
-syscall
+    li $v0, 10
+    syscall
