@@ -23,7 +23,7 @@
   -  Επίσης, μια εργασία μπορεί να έχει και άλλους συν-συγγραφείς που είναι επίσης ερευνητές πέρα από αυτόν που την υποβάλει.    
 
 
-# [Homework 2](/Semester2/Databases/Assignments/HW-2)
+# [Homework 2](./HW-2)
 #### 1) Σχεδιάστε ένα Ο/Σ που να αντιστοιχεί στο παρακάτω σχεσιακό μοντέλο (reverse engineering). Υπογραμμισμένα είναι τα κύρια κλειδιά των πινάκων και με πλάγια γραφή και ονοματολόγία πεδίο-πίνακας τα ξένα κλειδιά.
 - Ασθενής (ΑΜΚΑ, ονοματεπώνυμο, διεύθυνση)
 - Προσωπικό(ΑΦΜ, ονοματεπώνυμο, τηλέφωνο, διεύθυνση)
@@ -55,7 +55,7 @@
 
 
 
-# [Homework 3](/Semester2/Databases/Assignments/HW-3)
+# [Homework 3](./HW-3)
 Θεωρείστε το παρακάτω σχεσιακό σχήμα ( Kemper Datenbanksysteme (en)
 στο https://relax.mad.uom.gr/):  
 
@@ -150,7 +150,7 @@ successor ξένο κλειδί που αναφέρεται στο lecture(lectu
 ![ER1](./HW-3/3.png)    
 
 
-# [Homework 4](/Semester2/Databases/Assignments/HW-4) 
+# [Homework 4](./HW-4) 
 Η βάση δεδομένων chinook (https://github.com/lerocha/chinook-database) καταχωρεί πληροφορίες για ένα online κατάστημα πώλησης μουσικής. Μοντελοποιείται σε διάγραμμα ER ως εξής:  
 
 ![ER1](./HW-4/1.png)    
@@ -203,8 +203,41 @@ successor ξένο κλειδί που αναφέρεται στο lecture(lectu
 
 Ορίστε και το αντίστοιχο σχεσιακό διάγραμμα όπως το παρουσιάζει το Dbeaver:    
 
-![ER1](./HW-4/2.png)      
+![ER1](./HW-4/2.png)    
+
 
 
 Μπορείτε να χρησιμοποιήσετε τη βάση chinook στην MySQL/MariaDB ή στην PostgreSQL στο https://db.mad.uom.gr. Εναλλακτικά, σας δίνεται το dump της παραπάνω βάσης δεδομένων σε MySQL/MariaDB. Πρέπει να κάνετε restore το αρχείο αυτό στον δικό σας server και να απαντήσετε στα SQL αιτήματα που σας δίνουμε στο αρχείο [queries.sql](./HW-4/queries.sql).   
 
+# [Homework 5](./HW-5)  
+#### 1) Θεωρήστε τη σχέση R(A,B,C,D,E, F, G, H, I, J, K, L) σε 1NF και συναρτησιακές εξαρτήσεις:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Α → B, C, D  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B → G, H  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D → E, F  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I → J, L  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A, I → K  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A, B, I → H, L  
+
+- <b>Κανονικοποιήστε σε 3NF.</b>  
+
+- <b>Είναι το σχήμα που καταλήξατε στο προηγούμενο ερώτημα σε BCNF; Αν όχι, κανονικοποιήστε το σε BCNF.</b>  
+
+#### 2) Θεωρήστε τη σχέση R(A, B, C, D, E) σε 1ΝF και συναρτησιακές εξαρτήσεις:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C → A, D  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D, E → B  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A → E  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B → C  
+
+- <b>Κανονικοποιήστε σε 3NF.</b>  
+
+- <b>Είναι το σχήμα που καταλήξατε στο προηγούμενο ερώτημα σε BCNF; Αν όχι, κανονικοποιήστε το σε BCNF.</b>  
