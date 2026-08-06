@@ -147,4 +147,64 @@ successor ξένο κλειδί που αναφέρεται στο lecture(lectu
 
 <b>Σημείωση:</b> Χρησιμοποιείστε αποκλειστικά μόνο τους παρακάτω τελεστές:  
 
-![ER1](./HW-3/3.png)  
+![ER1](./HW-3/3.png)    
+
+
+# [Homework 4](/Semester2/Databases/Assignments/HW-4) 
+Η βάση δεδομένων chinook (https://github.com/lerocha/chinook-database) καταχωρεί πληροφορίες για ένα online κατάστημα πώλησης μουσικής. Μοντελοποιείται σε διάγραμμα ER ως εξής:  
+
+![ER1](./HW-4/1.png)    
+
+Το αντίστοιχο σχεσιακό σχήμα είναι το εξής (υπογραμμισμένα τα κλειδιά, ξεχωριστή αναφορά στα ξένα κλειδιά):  
+
+<b>Track</b>(<ins>TrackId</ins>, Name, AlbumId, MediaTypeId, GenreId, Composer, Milliseconds, Bytes, UnitPrice)  
+
+&nbsp;&nbsp;&nbsp;AlbumId ξένο κλειδί αναφέρεται στο Album(AlbumId)  
+
+&nbsp;&nbsp;&nbsp;MediaTypeId ξένο κλειδί αναφέρεται στο MediaType(MediaTypeId)  
+
+&nbsp;&nbsp;&nbsp;GenreId ξένο κλειδί αναφέρεται στο Genre(GenreId)  
+
+<b>Album</b>(<ins>AlbumId</ins>, Title, ArtistId)  
+
+&nbsp;&nbsp;&nbsp;ArtistId ξένο κλειδί αναφέρεται στο Artist(ArtistId)  
+
+<b>Artist</b>(<ins>ArtistId</ins>, Name)  
+
+<b>Genre</b>(<ins>GenreId</ins>, Name)  
+
+<b>MediaType</b>(<ins>MediaTypeId</ins>, Name)  
+
+<b>Playlist</b>(<ins>PlaylistId</ins>, Name)  
+
+<b>PlaylistTrack</b>(<ins>PlaylistId</ins>, TrackId)  
+
+&nbsp;&nbsp;&nbsp;PlaylistId ξένο κλειδί αναφέρεται στο Playlist(PlaylistId)  
+
+&nbsp;&nbsp;&nbsp;TrackId ξένο κλειδί αναφέρεται στο Track(TrackId)  
+
+<b>Invoice</b>(<ins>InvloiceId</ins>, CustomerId, InvoiceDate, BillingAddress, BillingCity, BillingState, BillingCountry, BillingPostalCode, Total)  
+
+&nbsp;&nbsp;&nbsp;CustomerId ξένο κλειδί αναφέρεται στο Customer(CustomerId)  
+
+<b>InvoiceLine</b>(<ins>InvoiceLineId</ins>, InvoiceId, TrackId, UnitPrice, Quantity)  
+
+&nbsp;&nbsp;&nbsp;InvoiceId ξένο κλειδί αναφέρεται στο Invoice(InvloiceId)  
+
+&nbsp;&nbsp;&nbsp;TrackId ξένο κλειδί αναφέρεται στο Track(TrackId)  
+
+<b>Customer</b>(<ins>CustomerId</ins>, FirstName, LastName, Company, Address, City, State, Country, PostalCode, Phone, Fax, Email, SupportRepId)  
+
+&nbsp;&nbsp;&nbsp;SupportRepId ξένο κλειδί αναφέρεται στο Employee(EmployeeId)  
+
+<bEmployee</b>(<ins>EmployeeId</ins>, LastName, FirstName, Title, ReportsTo, BirthDate, HireDate, Address, City, State, Country, PostalCode, Phone, Fax, Email)  
+
+&nbsp;&nbsp;&nbsp;ReportsTo ξένο κλειδί αναφέρεται στο Employee(EmployeeId)      
+
+Ορίστε και το αντίστοιχο σχεσιακό διάγραμμα όπως το παρουσιάζει το Dbeaver:    
+
+![ER1](./HW-4/2.png)      
+
+
+Μπορείτε να χρησιμοποιήσετε τη βάση chinook στην MySQL/MariaDB ή στην PostgreSQL στο https://db.mad.uom.gr. Εναλλακτικά, σας δίνεται το dump της παραπάνω βάσης δεδομένων σε MySQL/MariaDB. Πρέπει να κάνετε restore το αρχείο αυτό στον δικό σας server και να απαντήσετε στα SQL αιτήματα που σας δίνουμε στο αρχείο [queries.sql](./HW-4/queries.sql).   
+
