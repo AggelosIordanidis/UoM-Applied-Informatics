@@ -1,0 +1,136 @@
+-- 1. Οι καλλιτέχνες (artist) που το όνομα τους αρχίζει από 'Κ' ή τελειώνει σε 'y'
+-- σε αλφαβητική σειρά. [όλα τα στοιχεία των καλλιτεχνών]
+
+SELECT * FROM artist a
+WHERE a.Name LIKE 'K%' OR a.Name  LIKE '%y' 
+ORDER BY a.Name ASC;
+
+-- 2. Το πλήθος των κομματιών (track) για κάθε καλλιτέχνη σε φθίνουσα κατάταξη
+--    ως προς το πλήθος. [όνομα_καλλιτέχνη, πλήθος]
+
+SELECT a.Name, COUNT(t.TrackId) AS TotalTracks
+FROM artist a
+LEFT JOIN album al ON a.ArtistId = al.ArtistId
+LEFT JOIN track t ON al.AlbumId = t.AlbumId
+GROUP BY a.Name, a.ArtistId
+ORDER BY TotalTracks DESC;
+
+-- 3. Ο νεότερος εργαζόμενος.
+--    [όλα τα στοιχεία του εργαζόμενου]
+
+SELECT * FROM employee e
+ORDER BY e.BirthDate DESC 
+LIMIT 1;
+
+-- 4. Οι καλλιτέχνες που έχουν τουλάχιστον 2 album με είδος 'Metal'.
+-- [όνομα_καλλιτέχνη, πλήθος_album]
+
+SELECT a.Name, COUNT(DISTINCT al.AlbumId) AS TotalAlbums
+FROM artist a
+JOIN album al ON a.ArtistId = al.ArtistId
+JOIN track t ON al.AlbumId = t.AlbumId
+JOIN genre g ON t.GenreId = g.GenreId
+WHERE g.Name = 'Metal'
+GROUP BY a.Name, a.ArtistId
+HAVING TotalAlbums >= 2;
+
+-- 5. Για κάθε συνδυασμό φορμά ( media_type) και είδους μουσικής το πλήθος 
+--    των κομματιών που έχει ταξινομημένα σε φθίνουσα σειρά πλήθους. 
+--    Να εμφανίζονται και οι συνδυασμοί που δεν έχουν κανένα κομμάτι. 
+--    [όνομα_φορμά, όνομα_είδους, πλήθος]
+
+SELECT mt.Name AS MediaTypeName, g.Name AS GenreName, COUNT(t.TrackId) AS TotalTracks
+FROM mediatype mt
+CROSS JOIN genre g 
+LEFT JOIN track t ON mt.MediaTypeId = t.MediaTypeId AND g.GenreId = t.GenreId
+GROUP BY mt.Name, g.Name
+ORDER BY TotalTracks DESC;
+
+-- 6. Το τιμολόγιο με τα περισσότερα κομμάτια (invoiceline). 
+--     [κωδικός_τιμολογίου, ημερομηνία, κωδικός_πελάτη, σύνολο, πλήθος]
+
+SELECT 
+    ivc.InvoiceId, 
+    ivc.InvoiceDate, 
+    ivc.CustomerId, 
+    ivc.Total, 
+    COUNT(ivcl.InvoiceLineId) AS TotalItems
+FROM invoice ivc
+JOIN invoiceline ivcl ON ivc.InvoiceId = ivcl.InvoiceId
+GROUP BY ivc.InvoiceId
+ORDER BY TotalItems DESC 
+LIMIT 1; 
+	   
+-- 7. Οι playlists που έχουν tracks και καλλιτεχνών που το όνομα τους αρχίζει από 'Α' και καλλιτεχνών 
+-- που το όνομα τους αρχίζει από 'Μ'. [όλα τα στοιχεία της playlist]
+
+SELECT * FROM playlist p
+WHERE PlaylistId IN (
+   SELECT pt.PlaylistId
+   FROM playlisttrack pt
+   JOIN track t ON t.TrackId = pt.TrackId
+   JOIN album al ON al.AlbumId = t.AlbumId
+   JOIN artist a ON a.ArtistId = al.ArtistId
+   WHERE a.Name LIKE 'A%'
+)
+AND PlaylistId IN (
+    SELECT pt.PlaylistId
+    FROM playlisttrack pt 
+    JOIN track t ON t.TrackId = pt.TrackId
+    JOIN album al ON al.AlbumId = t.AlbumId
+    JOIN artist a ON a.ArtistId = al.ArtistId
+    WHERE a.Name LIKE 'M%'
+);
+ 
+-- 8. Οι playlist που έχουν track από όλα τα album με τίτλο που περιέχει τη λέξη 'best'.
+--    [όλα τα στοιχεία των playlist]
+
+SELECT * FROM playlist p
+WHERE NOT EXISTS (
+    SELECT al.AlbumId 
+    FROM album al 
+    WHERE al.Title LIKE '%best%'
+    AND NOT EXISTS (
+        SELECT pt.TrackId 
+        FROM playlisttrack pt
+        JOIN track t ON pt.TrackId = t.TrackId
+        WHERE pt.PlaylistId = p.PlaylistId 
+        AND t.AlbumId = al.AlbumId
+    )
+);
+
+-- 9. Ζεύγη εργαζομένων που έχουν τον ίδιο προϊστάμενο ταξινομημένοι αλφανητικά κατά επώνυμο_προϊσταμένου.
+--    [επώνυμο_πρώτου_υπαλλήλου, όνομα_πρώτου_υπαλλήλου, επώνυμο_δεύτερου_υπαλλήλου, όνομα_δεύτερου_υπαλλήλου, επώνυμο_προϊσταμένου, όνομα_προϊσταμένου]
+
+SELECT 
+    A.LastName AS FirstEmployeeSurname,
+    A.FirstName AS FirstEmployeeName,
+    B.LastName AS SecondEmployeeSurname,
+    B.FirstName AS SecondEmployeeName,
+    C.LastName AS BossSurname,
+    C.FirstName AS BossName
+FROM employee A 
+JOIN employee B ON A.ReportsTo = B.ReportsTo
+JOIN employee C ON A.ReportsTo = C.EmployeeId
+WHERE A.EmployeeId < B.EmployeeId 
+ORDER BY C.LastName ASC;
+
+-- 10. Οι πελάτες που έχουν αγοράσει κομμάτια με είδος Classical αλλά όχι Opera. [όλα τα στοιχεία των πελατών]
+
+SELECT * FROM customer c 
+WHERE c.CustomerId IN (
+	SELECT invc.CustomerId
+    FROM invoice invc
+    JOIN invoiceline invcline ON invcline.InvoiceId = invc.InvoiceId
+    JOIN track t ON t.TrackId = invcline.TrackId
+    JOIN genre g ON g.GenreId = t.GenreId
+    WHERE g.Name = 'Classical'
+)
+AND c.CustomerId NOT IN (
+    SELECT invc.CustomerId
+    FROM invoice invc
+    JOIN invoiceline invcline ON invcline.InvoiceId = invc.InvoiceId
+    JOIN track t ON t.TrackId = invcline.TrackId
+    JOIN genre g ON g.GenreId = t.GenreId
+    WHERE g.Name = 'Opera'
+);
