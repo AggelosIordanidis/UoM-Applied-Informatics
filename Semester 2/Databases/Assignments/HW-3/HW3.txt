@@ -1,0 +1,95 @@
+1)
+π employee_id, name, expertise (
+  assistant 
+  ⨝ assistant.boss = lecture.lectured_by (
+    σ credits = 2 ∨ credits = 4 (lecture)
+  )
+)
+
+
+2)
+π student_id (
+  σ title = 'Ethik' (lecture ⨝ attends)
+) 
+∩ 
+π student_id (
+  σ title = 'Bioethik' (lecture ⨝ attends)
+)
+
+
+3)
+π assistant.name (
+  assistant 
+  ⨝ boss = professor.employee_id (
+    σ professor.name = 'Kopernikus' (professor)
+  )
+)
+
+
+4)
+π lecture_id, title, credits (lecture)
+- 
+π lecture_id, title, credits (
+  lecture ⨝ lecture_id = successor (requires)
+)
+
+
+5)
+π name (
+  professor 
+  ⨝ employee_id = l_id (
+    π L1.lectured_by → l_id (
+      σ L1.lectured_by = L2.lectured_by ∧ 
+        L2.lectured_by = L3.lectured_by ∧ 
+        L1.lecture_id < L2.lecture_id ∧ 
+        L2.lecture_id < L3.lecture_id (
+          ρ L1 (lecture) ⨯ ρ L2 (lecture) ⨯ ρ L3 (lecture)
+      )
+    )
+  )
+)
+
+
+
+
+
+
+
+
+6)
+π student_id, name, semester (student)  - 
+π A1.student_id, A1.name, A1.semester (
+  ρ A1 (student) 
+  ⨝ A1.semester < A2.semester 
+  ρ A2 (student)
+)
+
+
+
+
+7)
+π student.name (
+  student 
+  ⨝ student_id = sid (
+    π student_id → sid, lecture_id (attends) 
+    ÷ 
+    π lecture_id (σ lecture_id > 5050 (lecture))
+  )
+)
+
+
+
+
+
+8)
+π student_id (
+  attends 
+  ⨝ lecture_id = successor (
+    π successor (
+      requires 
+      ⨝ predecessor = lecture_id (
+        σ title = 'Grundzuege' (lecture)
+      )
+    )
+  )
+)
